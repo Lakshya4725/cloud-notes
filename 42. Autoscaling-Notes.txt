@@ -1,0 +1,125 @@
+
+
+Autoscaling: Notes
+
+Whenever load increases on the server related with compute power, network or 
+storage then to balance that load or distribute the load technologies
+like clustering,load balancing, high availability are implemented.
+These loads can be managed by using either vertical scaling or horizontal scaling
+both types of scaling have there pros and cons.
+Autoscaling is one of the tool provided by amazon which is broadly and 
+widely used in cloud computing.
+In amazon cloud computing it is one of the best tool to scale up or down
+the resources based on load patterns.
+Aws autoscaling uses Horizontal scaling to add number of ec2 instances
+(i.e number of nodes) dynamically whenever the load on your application
+increases.
+It is fully designed to launch or terminate the correct number of ec2 
+instances to handle the load of your application.
+Amazon autoscaling uses Fleet management technique
+Fleet management is a functionality that checks the health of ec2 instances
+and automatically replaces unhealthy instances with new instances.
+If any instance faces any problem then instead of recovering or restoring
+that instance a new instance is launched.
+Autoscaling takes the advantage of amazon infrastructure where it can span
+ec2 instances across multiple AZs.
+It can add or terminate the ec2 instances in the period of 30 sec to 180 sec.
+If the AZs are not available or unhealthy the it redistributes the traffic
+across all the healthy AZs.
+Autoscaling is region specific means it can scale only within the regions.
+Cross region scaling is not supported by autoscaling.
+Autoscaling supports only frontend applications like:
+	>Apache
+	>IIS
+	>Nginx
+	>Wordpress
+	>Tomcat or middleware applications (jboss).
+Autoscaling does not supports backend application. i.e cannot be used with
+database applications like:
+	>Oracle
+	>MySQL
+	>Mariadb
+	>MS-SQL
+	>NOSQL (Mongodb, rediss)
+
+Benefits of autoscaling:
+
+Better fault tolerance
+	It automatically terminates or launches an ec2 instance when
+	an instance or AZs are unhealthy.
+Better Availability
+	Always ensures the right amount of capacity to handle the current
+	traffic demands.
+Better cost management.
+	Saves money by launching or terminating instances when they are
+	 actually needed.
+Pricing for Auto Scaling:
+	Auto scaling carries no additional fees.
+	Autoscaling depends on cloudwatch. So Cloudwatch billing will
+	be applied.
+	Ec2 instance charges will be applied.
+
+Launch Configuration:
+It creates a template containing following information:
+	Amazon Machine Image (AMI)
+	Instance Type
+	Key pair
+	Security groups
+	Block device mapping
+
+Auscaling group:
+Auto scaling group can specify the minimum and maximum number of instance
+to ensure that instance in the group never goes above or below the 
+required size.
+Autoscaling policy:
+	Autoscaling policy defines rules for dynamically increase or decrease
+	the ec2 instance count based on cloudwatch alarms.
+
+Autoscaling Configuration:
+
+Create AMI:
+1. Launch instance
+2. Configure web server
+3. Stop the instance
+4. Create image.
+
+Create launch configuration:
+1. Choose AMI
+2. Choose Instance type
+3. Configure details
+4. Add storage
+5. Configure Security Group
+6. Review
+
+Create Auto scaling Group:
+1. Launch Configuration
+2. Group name
+3. Group size start with
+4. Network
+5. Subnet
+
+Scaling Group Policy:
+Increase group size
+1. Name
+2. Alarm
+3. Action
+
+Decrease Group size
+1. Name
+2. Alarm
+3. Action
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

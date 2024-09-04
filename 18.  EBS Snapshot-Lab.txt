@@ -1,0 +1,67 @@
+EBS Snapshot:
+
+1. Create EC2 Windows instance say name: Win-VM-1 in Oregon region 
+   in us-west-2a AZ
+2. Create EBS volume of 2gb in us-west-2a, say name: 2gb2a.
+3. Connect to windows instance using remote desktop.
+4. Open disk management using command diskmgmt.msc.
+5. Initially, you will see disk0 of 30 gb.
+6. Go to EBS volumes, attach 2gb2a volume to your windows instance.
+7. Go to disk management of windows instance, now you will a see new 
+   disk 1 of 2gb available. Make it online.Once drive letter is available,
+   create two folders say China and Korea in it.
+8. Suppose we want to increase this 2gb volume. For that we have to 
+   create a snapshot of 2gb2a volume.
+9. To create snapshot, go to Volumes, select 2gb2a volume,go to 
+   Action, select create snapshot.
+10. In description box, give some descripion say snap-1-2gb2a.
+11. Snapshot is point-in-time backup. Here since we created a snapshot
+    of 2gb2a volume having two folders inside it i.e China and Korea, 
+    this snapshot will contain those two folders.
+12. Snapshots can't be attached directly to instances. To attach this 
+    snapshot to instance, we have to create volume of this snapshot.
+13. To create volume of this snapshot, go to snapshot service, select 
+    option create volume. Here we can increase the size of the volume 
+    too. Suppose we want to create a volume of 4gb. so in size mention 4gb.
+14. Select AZ us-west-2a.
+15. Once created, attach this volume to windows instance.
+16. Go to disk management. make the disk online. Open the volume. 
+    You will see two folders China and Korea inside it.
+    Now this windows instance has two EBS volumes attached to it.
+    2gb and 4gb.
+17. Go to original 2gb EBS volume (Disk1). open it and create two more folders inside it.
+    Say :Kenya and Nigeria.
+18. Again take snapshot of this 2gb volume say snap-2-2gb2a.
+19. Again go to Disk-1 i.e original 2gb EBS volume and create two more folders inside it
+    say: Australia, NewZealand .
+20. Again take a snapshot of this same 2gb EBS volume say:snap-3-2gb2a. 
+21. Now go to windows ec2 instance. Open diskmanagement and make both 2gb and 4gb EBS volumes offline.
+22. Go to EBS Volumes service, detach both the volumes from Windows instance.
+23. Delete both the EBS volumes. Now we want to restore the deleted data from backup i.e snapshots.
+    But we had not taken snapshot of 4gb EBS volume. So data inside it is gone.
+24. Let us now restore the snap-3-2gb2a. To restore it, we have to first create EBS volume from the
+    snapshot and then attach that volume to EC2 instance. We cant directly attach snapshots to ec2 
+    instance.
+25. Now go to snapshot service, select snapshot snap-3-2gb2a, click aAction and select create volume. 
+    You can create volume of same size i.e 2gb or more size. Let us create volume of 4GB.
+26. Once successfully created, go to Action and select Attach volume. Attach it to windows instance.
+27. Go to windows instance, open disk management, make disk 1 of 4gb online. 
+    Open the volume and you will see contents of snap-3-2gb2a inside it.
+28.  Till now we created instances and EBS volumes in same region, Oregon and same AZ us-west-2a.
+     Now let us create one Windows ec2 instance in Singapore region in AZ ap-southeast-1. 
+     Copy any snapshot from oregon region say snap-1-2gb2a in Singapore region in AZ ap-southeast-1.
+     Once snapshot is copied (after 10-15 min), create EBS volume from it in Singapore region,
+     and then attach that EBS volume to your windows instance in Singapore region.
+29. Go to snapshot service in Oregon region, select snapshot snap-1-2gb2a, click on Action and select Copy.
+    Select Singapore region and ap-souteast-1 as destination for copying snapshot. It will take 10-15 min for copying operation.
+    Once copied, select the snapshot in Singapore region, go to Action and select Create Volume. Let us create volume of 3GB.
+30. Once the volume is successfully created, select the volume , go to aAction, and select Attach.
+31. Attach this volume to your windows ec2 instance in Singapore region.
+32. Go to your windows instance, open disk management, you will see disk-1 of 3gb. Make it online. 
+    Open the volume you will see contents of snap-1-2gb2a i.e folders, China and Korea.
+32. At the end, make disk-1 offline. Go to EBS volume service, detach volume from windows instance. Delete volume and delete copied snapshot
+
+
+
+   
+     

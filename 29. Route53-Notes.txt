@@ -1,0 +1,108 @@
+Route53 Notes:
+Route53 is Amazon's authoritative DNS service. DNS is the system that 
+translates human readable domain names (example.com) into IP addresses.
+DNS is a client/server network communication system.
+The DNS translates internet domain names and host names to IP addresses and
+vice versa.
+Route53 is built using AWS's highly available and reliable global infrastructure
+It uses a global anycast network of DNS servers around the world.
+Anycast is a networking and routing technology that helps your end users DNS queries
+get answered from the optimal Route53 location given network condition.
+As a result,your users get high avaibility and improved performance with
+Route53.
+Amazon Route53 is designed to propogate updates within 60 seconds under normal 
+conditions.
+Amazon also supports private DNS, that lets you have authoritative DNS
+within your VPCs without exposing your DNS records
+(Including the name of the resource and its IP address(s) to the Internet.
+
+Amazon Route53 DNS record type 
+	A (ipv4 address record)
+	AAAA (IPV6 add record)
+	CNAME (Canonical name record)
+	MX (Mail exchange record) email server/ SES
+	NS (Name server record)
+	PTR (Pointer record)                1000  40      &1000=40
+	SOA (Start of authority record)
+	SRV (Service record)
+	TxT (Text record)/ELB
+
+HEALTH CHECK
+To route the traffic to the end points amazon can perform health checks-
+A health check is performed using (HTTP,HTTPS,OR TCP) protocols over IP addresses and ports.
+Amazon Route53 cannot check the health of endpoints for which the IP address is in local,
+private,non routable,or multicast ranges.
+Route53 features
+	Reliable
+	Fast
+	Integrated with AWS
+	Easy to use
+	Cost effective
+	Flexible
+
+ROUTING POLICIES
+Simple routing
+With Simple Routing, Amazon Route53 responds to Dns queries based only on the values in the resource record set 
+(i.e the IP)
+WEIGHTED ROUTING POLICIES
+Weighted Routing Policy is used when multiple resources performs the same function,and you want Amazon Route53 to route 
+traffic to those resources in proportions that you specify.For eg:Sending 30% of queries to one server and
+70% to other.For eg: While testing new versions of software or under load balance latency routing policy 
+Use when you have resources in multiple locations and you want to route traffic to the resource that provides the best latency.
+
+Lab: 
+1. Create two webservers one in Singapore and other in Oregon
+2. Check whether you access both webservers using public IP addresses of your ec2 instances.
+3. Purchase domain name from godaddy or freenom (.com is paid, .tk,.gl etc are free)
+4. Host your domain name in Route53. Amazon creates min four Name server records for your domain 
+	in different locations worldwide using their infrastructure.
+5. Remove the DNS NS record from freenom/godaddy/local ISP and replace it with AWS DNS NS record 
+
+6. Create record set in route53 for A,CNAME for both servers you created in step 1 
+7. Check the site with name instead of iP
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

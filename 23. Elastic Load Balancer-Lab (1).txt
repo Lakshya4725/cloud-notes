@@ -1,0 +1,59 @@
+Elastic Load Balancer
+
+
+ELB works only within region and not outside the region
+ELB works with different AZ in same region.
+For ELB to work with different regions, Route 53 is used.
+
+
+Scenario:
+Create two web servers in same region and different AZ.
+Bind these two webservers in ELB. Check the result.
+
+1. Create AWS Ec2 Linux instance, say web-1,in Oregon, us-west-2a.
+2. Create AWS Ec2 Linux instance, say web-2, in Oregon, us-west-2b.
+3. Connect to web-1 using mobax, log on with root user and
+   configure webserver on it.
+   	yum install  httpd -y
+	chkconfig  httpd on
+	service httpd restart
+	cat   << EOF  > /var/www/html/index.html  
+	<html>
+	<body  bgcolor=aqua>
+ 	<h1>  Webserver ONE </h1> 
+	</body>
+	</html>
+	
+Ctrl+d to save the contents.
+
+	
+4. Check the website on web-1.
+5. Connect to web-2 using mobax, log on with root user and
+   configure webserver on it.
+	yum install  httpd -y
+	chkconfig  httpd on
+	service httpd restart
+	cat   << EOF  > /var/www/html/index.html  
+	<html>
+	<body  bgcolor=orange>
+ 	<h1>  Webserver TWO </h1> 
+	</body>
+	</html>
+Ctrl+d to save
+	EOF
+6. Check the website on web-2.
+7. Go to services -> Load balancing, -> Load Balancers
+8. Select Create Load Balancer -> Application Load Balancer ->Create
+9. Give Name, scheme: Internet facing, -> Next Configure Security Settings
+10. Select at least two AZ where you launched your instances.Select Next Configure Security Groups.
+11. Select Create New Security Group. Select Next Configure Routing.
+12. Give Target Name and select Next: Register Targets.
+13. Select Instances and Click Add to Registered.
+14. Select Next:Review
+15. Select Create. Once successfully created, click close.
+16. Copy the DNS name of the Load Balancer and paste it in new Browser. You will get connected randomly to any webserver.
+17. Copy the DNS name of the Load balancer again in different browser, you may get connected to next webserver.
+12. Now terminate the instance where you got connected and again try to open the website. This time you
+    will get connected to another instance.
+
+

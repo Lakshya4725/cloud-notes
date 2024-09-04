@@ -1,0 +1,134 @@
+Autoscaling Lab:
+
+
+1. Go to services, EC2 and create one linux Ec2 instane.
+2. Connect to ec2 instance using mobax.
+3. Configure web server on this instance.
+4. Check the webserver by accessing it using its public IP.
+5. Now let us run following commands to create some folders in this instance.
+6. root@ip ec2-user# mkdir hotel/room{1..100} -p
+7. root@ip ec2-user# ls hotel/
+8. You will see that 100 folders are created
+9. Now let us create image of this instance. For that first stop the 
+instance Then go to Actions, Image, Create Image. Give some image name
+say Linux-img.
+10. Give some description. Click Create Image.
+11. Image will get created. It will take some time.
+12. You can find your image in Services,Ec2, Images, AMIs.
+13. Now let us create launch configuration.
+14. Go to services, EC2, Auto scaling, Launch configuration 
+15. Click Create launch configuration
+16. Click My AMIs. You will see your Linux-img here.
+17. Select your image Linux-img, Select t2 micro (free tier).Click Next.
+18. Give some name to launch configuration: Lin-Conf. Click Next.
+19. Click next.
+20. Click create new security group (default)
+21. Click Add Rule, select http, and Next
+22. Click create launch configuration
+23. Once launch configuration is successfully created, select Create an Auto
+scaling group using this launch configuration.
+24. Give some group name say: Linux-Group
+25. In group size, select start with 1 instance.
+26. In Network, select default vpc.
+27. In subnet, select all the three default subnet. Click Next.
+28. Select Use scaling policies to adjust the capacity of this group.
+29. Select scale between 1 and 3 instances.
+30. Now click the link Scale the Auto Scaling group using step or simple scaling
+policies.
+31. In the Increase Group Size, Click Add new alarm
+33. Create Alarm page appears. In Send a Notification To: write some
+name say:LinxCPU
+34. In with these recipient, type your email ID say abc@gmail.com.
+35. In Whenever field, type: Average of CPU Utilization.
+36. In Is field, type >= 30 percent.
+37. For atleast 1 consecutive period(s) of 5 Minutes
+38. Click Create Alarm.
+39. Create Auto Scaling group Page appears
+40. In Take the Action, select Add 1 instance when 30<=CPUUtilization<+infinity
+41. In instances need: select 300 seconds to warm up after each step.
+42. Now scroll down to go to Decrease Group Size.
+43. Click Add new alarm.
+44. In Send a notification to : select LinxCPU
+45. In whenever field, select Average of CPU Utilization.
+46. In Is field, select <= 20 percent.
+47. In For at least field, select 1 consecutive period of 5 minutes.
+48. Click Create Alarm.
+49. Create Auto Scaling Group page appears, in Take the action field, select
+    Remove 1 instance when 20>=CPUUtilization > -infinity.
+50. Click Next: Configure Notifications
+51. Click Add Notification
+52. In Send a notification to field, select abc@gmail.com
+53. Whenever instances: launch, terminate, fail to launch, fail to terminate
+54. Click Next: Configure Tags
+55. In Key field, type Name. In Value field, type something like AutoVMPune.
+56. Click Review.
+57. Click Create Auto Scaling Group.
+58. Click Close
+59. Now go to services, EC2,Running instances.You will see that one machine named AutoVMPune
+    is launched.
+
+61. Now let us check whether web server is running or not. For that go to browser
+	and type public IP of the instance with http. You will see that the 
+	new machine is running the same web page as that of image.
+60. Now let us put some load on this machine.
+62. Now connect to that machine using Mobax.By default user name will be root.
+	 Log on with user ec2-user. Connect using two mobax terminals, one for monitoring
+	and other to put load on server.
+63. To monitor, go to one mobax terminal and give commands:
+	#sudo su
+	#top
+	You will see that your cpu is 100% idle as there is no load on it currently.
+64. Now go to another mobax terminal and to put load, give following commands:
+	# sudo su
+	#yum install stress
+	# stress  --cpu  40  --timeout  1000 &
+65. Now go to monitoring terminal of mobax and you will see that load 
+	is approching 100%
+66. Now the moment alarms are created, new ec2 instance will get launch 
+	to handle the increasing load on cpu
+67. Go to your email account and see the notification email. Open it and 
+click on confirm subsciption link.
+68. Go to services, cloudwatch. Click on Alarm. You will see one new alarm
+created.
+68. Go to services, SNS, Topics.You will see one new topic in SNS.
+69. After around 5-7 min a new ec2 instance will spin up.
+70. As soon as the load is reduced below 20, one ec2 instance will
+automatically get terminated. This is autoscaling.
+71. To delete the lab, don't terminate instances directly. It will get created again and again.
+	To delete, we have to delete launch configuration and autoscaling group.
+72. Now let us terminate the command to stop autoscaling:
+	Go to mobax terminal you used to put load.
+	Give command:
+	#killall stress
+73. Go to mobax monitoring terminal. You will seethat your cpu is approching 100% idle state.
+74. Now one by one all ec2 instances will get terminated automatically
+	It will take 5-10 min. Dont't terminate last ec2 instance created by autoscaling by yourself.
+
+75. Go to autoscaling group, select group, Action, delete. This will terminate all ec2 instances.
+76. Once all ec2 instances are terminated, you delete launch configuration.
+	Go to Launch configuration, select launch configuration, Action, Delete launch configuration.
+77. Go to Ec2 dashboard, snapshots, delete snapshot.
+78. If you get error, while deleting snapshot, go to AMI, select image, Action, deregister.
+	It will take few min to delete the ami.
+79. Now go to snapshot again and try to delete it. It will get deleted successfully.
+80. Go to Security groups and delete all security groups created for autoscaling. Make sure
+	you don't delete default security group by mistake.
+81. You will see that your instances created by autoscaling will no more be there.
+82. You can delete the instance manually which you created initially to create image.
+83. Also delete SNS topic and cloudwatch alarm created for this lab.
+
+
+
+For website on Linux:
+
+sudo su
+   	yum install  httpd -y
+	chkconfig  httpd on
+	service httpd restart
+	cat   << EOF  > /var/www/html/index.html  
+	<html>
+	<body  bgcolor=aqua>
+ 	<h1>  This is my First Linux Webserver on Cloud </h1> 
+	</body>
+	</html>
+	EOF	

@@ -1,0 +1,17 @@
+EFS: Elastic File Storage:
+Amazon EFS is a NfS file system i.e, Network File System.
+With EFS, storage capacity is elastic i.e, growing and
+shrinking automatically as you add and remove files. 
+Applications will have the storage when they need it.
+Can scale upto petabytes.
+Can support thousands of concurrent NFS connections.
+Amazon EFS supports the Network File system versions 4.0 
+and 4.1 (NFSv4).
+With Amazon EFS, you pay only for the storage used by your
+file system.
+It can only be used with EC2 instances in your VPC.
+It cannot be used with on premises Data Centre Server.
+If EFS is created in particular Az, then the instances of 
+that zone can only mount it.
+It provied a end point with DNS name through which it 
+can be mounted.

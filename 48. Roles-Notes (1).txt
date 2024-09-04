@@ -1,0 +1,14 @@
+AWS Roles Notes:
+When policies are applied on an AWS Ec2 instance or AWS application
+or service then it is called Role.
+An IAM role is very similar to a user, in that it is an identity with 
+permission and policies that determine what the identity can and 
+cannot do in AWS.
+Roles do not use username and password but they use access key and
+secret key in order to use the services like ec2, lambda, s3, RDS,
+autoscaling etc.
+Scenario
+ Suppose you had configured any server and now you want to upload the
+data to s3 without any user interaction then if that ec2 instance is having
+a role of s3 then it can automatically upload with the help of script
+without user interaction.

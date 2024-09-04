@@ -1,0 +1,84 @@
+1) Cloud storage 
+	Storage over internet which cannot be formatted.
+
+2) cloud storage maintains atleast 3 copies of data in min 3 
+   seperate nodes may be in same or different regions.
+
+3) There is no limit for storage size and file size.
+
+4) Whenever any service or resource is configured in AWS, then possibly 
+a snapshot or backup is maintained on s3.
+
+5) S3 is a Global service.
+
+6) Any file is stored in s3 is called as object 
+
+7) cloud storage is also referred as object storage.
+
+8) Every file or object will have unique url.
+
+9) S3 stores the data in bucket.
+
+10) Bucket names should be unique in entire Amazon, under free tier
+by default 100 buckets can be created.
+
+11) S3 allows to create Static websites.
+
+
+	To host a static website through  S3
+
+	1) create bucket (say www.gns.com)
+	2) upload all website code
+	3) Select bucket => properties => Static WEBsite
+			Use this bucket to host a website
+				index document => index.html
+				error  document	=> error.html
+
+
+	4) create  the bucket policy
+			Select Bucket => Permissions => Bucket Policy
+
+Go to bucket properties -> Static Website -> Copy End point
+Open Browser  provide the end point
+
+www.gns.com
+
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "PublicReadForGetBucketObjects",
+			"Effect": "Allow",
+			"Principal": "*",
+			"Action": "s3:GetObject",
+			"Resource": "arn:aws:s3:::www.gns.com/*"
+		}
+	]
+}
+ How to share multiple resources?
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "PublicReadForGetBucketObjects",
+			"Effect": "Allow",
+			"Principal": "*",
+			"Action": "s3:GetObject",
+			"Resource": ["arn:aws:s3:::www.gns.com/1.txt",
+                       "arn:aws:s3:::www.gns.com/1.bmp"]
+		}
+	]
+}
+
+arn:aws:s3:::www.gns.com
+Version control can be enabled on Buckets
+
+
+
+
+
+
+
+
+
+

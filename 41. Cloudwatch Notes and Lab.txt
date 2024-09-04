@@ -1,0 +1,128 @@
+CloudWatch Notes and Lab:
+
+Notes:
+
+Cloudwatch does not monitor your on premises data centre infrastructure.
+For that we use traditional monitoring tools like:
+Nagios
+Zabbix
+Bigbrother
+MRTG, CACTI
+Airwatch
+Wireshark
+Zenoss
+ps,kill, nice, renice
+vmstat, iostat, syslog
+iptraf, netcool
+Windows Task Manager
+
+Cloudwatch is going to monitor only services and resources of 
+AWs infrastructure. By default cloudwatch is always running.
+Monitoring is done based on Metrics.Metrices are region specific.
+Amazon will monitor values based on metrices.
+Metrics is a collection of data through which Amazon keeps track
+of all services and resources.
+Each region contains its own metrics,and are stored for only 14 days.
+Then it gets expire automatically.
+From Nov 1, 2016, retention period of all metrices is changed from 14 days to 
+15 months.
+In AWS every resource will have some ID.
+Go to EC2 instances. Locate your instance. You will see 
+Instance ID in the second column.Copy that ID.
+Now go to services, Cloudwatch, Metrics. In available metrices, 
+select EC2 and then select Per-instance Metrics. In Search box,
+type instance ID. You will see all metrices regarding our EC2 instance.
+If you go to EC2 instance, you will see Monitoring tab. 
+By default Monitoring is enabled for your instance. Default type of monitoring
+is Basic. basic Monitoring is not charged. But if you enable
+Detailed monitoring it is charged.
+Basic monitoring collects information about particular metrics every after 5 min.
+Detailed monitoring collect data every after one min.
+Some metrices of Ec2 are as follows:
+CPUUtilization
+DiskReadBytes
+DiskReadOps
+DiskWriteBytes
+DiskWriteOps
+NetwokIn
+NetworkOut
+etc.
+
+S3:
+BucketSizeBytes
+NumberOfObjects
+etc
+
+
+CloudWatch Alarm:
+Alarm exists only in the region in which they are created.
+Alarm actions must reside in the same region as the alarm.
+Alarm watches a single metric over a specified time period.
+Based on the value of the metric relative to a given threshold
+over a number of time periods takes Action.
+Actions can be a
+	SNS notification
+	Autoscaling policies
+	Ec2 action-stop or terminate Ec2 instances.
+
+Assume that you have configured a metrics based on CPU utilization
+Suppose in this case of EC2 instance, assume that we have defined
+that if CPU utilization is above 30% for two consecutive periods, then
+alarm should be created.After that notification will be sent through SNS.
+ After threshold is reached, you have to take action.
+States of Alarm:
+OK:
+The metric is within the defined threshold.
+Alarm:
+The metrics is outside of the defined threshold.
+Insufficient_Data:
+The metrics is not available, alarm started.
+Not enough data is available for the metric to determine the alarm state.
+Can create upto 400 alarms per aws account.
+
+CloudWatch-Lab:
+
+Scenario:
+Let us configure one Ec2 machine. Put some load on that machine and see
+the cloudwatch behaviour.
+We can also try with S3. Metrics could be Numberof Objects in Bucket.
+If number of objects cross certain number say 10, alarm should be triggered.
+
+1. Lauch a linux Ec2 instance
+2. Now let us put some load on it.
+3. Go to EC2 instance, connect to it using Mobax.
+4. Give command: Sudo su
+5. Give command: top
+6. This command tells you how much is your CPU and memory utilization
+7. Initially, it shows 100% idle
+8. Open another terminal. One terminal to monitor, and other to put load.
+9. To put load, run command: Yum install stress with root account.
+10. Now give command # stress --cpu 40 --timeout 20
+11. Now you will see your CPU usage almost 100%
+12. After 20 sec command will get terminated and machine will go to idle state.
+13. Now go back to your cloudwatch service
+14. Go to Alarms
+15. Create Alarms
+16. Ec2 Metrics
+17. Per-Instance Metrics
+18. In search Metrics field, type instance id of your ec2 instance and enter
+19. Out of the available metrices, select CPUUtilization and click on it
+20. Select the metric displayed.
+21. You can see the graph. It went up showing high cpu utilization.
+22. Click Next
+23. In Alarm Threshold, give some name Ex; PuneTH
+24. In 'is' field, select >= 30. For 1 datapoint.That is only for 5 min.
+25. In action, 
+	Whenever this alarm: State is Alarm
+	Send notification to: PuneTH
+	Email list: abc@gmail.com
+	Create Alarm
+26. For confirmation, go to your mail's inbox. You will see one email.
+	Open it and click on confirm subscription.
+27. Now the state will show OK status.
+28. Now again put a load on cpu. This time for 1000 sec.
+29. Go to EC2 instance and type command:
+	#stress --cpu 40 --timeout 1000 &
+30. After few seconds you will get notification in your email.
+
+This is how cloudwatch service runs in AWS

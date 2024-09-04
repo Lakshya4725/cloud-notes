@@ -1,0 +1,27 @@
+Lambda:
+
+AWS Lambda supports code written in Node.js (javascript), 
+python, java (java 8 compatible), and c#(.Net Core).
+All calls made to AWS Lambda must complete execution within 300 seconds. 
+The default timeout is 3 seconds, but you can set the timeout to any 
+value between 1 and 300 seconds.
+AWS Lambda offers you run code without provisioning or managing servers, where you
+pay only for the compute time when the code is running.
+Lambda is priced on a pay per use basis and there are no charges when
+the code is not running. Lambda allows you to run code for any time of application 
+or backend service with zero administration.
+Lambda provides easy scaling and high availability to your code without
+additional effort on your part, Lambda does not provide access to the 
+underlying compute infrastructure.
+Lambda is designed to process events within milliseconds.
+Code components of Lambda are Lambda functions and event sources.
+	An event source is the AWS service or custom application 
+	that publishes events.
+	Lambda function is the custom code that processes the events.
+Lambda automatically integrates with Amazon Cloudwatch logs, creating a log group
+for each Lambda function and providing basic application lifecycle event
+log entries, including logging the resouces consumed for each use of that
+function
+
+
+

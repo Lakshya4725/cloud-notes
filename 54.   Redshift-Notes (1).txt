@@ -1,0 +1,71 @@
+Redshift Notes:
+Amazon Redshift gives you fast querying capabilities over structured 
+data using familiar sql based clients and business intelligence (BI)
+tools using standard ODBC and JDBC connections.
+Columnar Data Storage:
+	Instead of storing data as a series of rows, Amazon Redshift 
+organizes the data by columns.
+Unlike row-based systems, which are ideal for transactions 
+processing, column-based systems are ideal for data warehousing and 
+analytics, where queries often involve aggregates performed over large data 
+sets.
+Since only the columns involved in the queries are  processed and 
+columnar data is stored sequencially on the storage media, column-based system
+require far I/Os greatly improving query performance.
+Queries are distributed and parallelized across multiple physical
+resources.
+Uses replication and continuous backups to enhance availability and
+improve data durability and can automatically recover from node and
+component failures.
+Redshift only supports Single-AZ deplyoments.
+Single Node:
+Enables getting started quickly and cost effectively and scale up to a multi-node
+configuration as the needs grow.
+Multi Node:
+Requires a leader node that manages client connections and receive queries,
+and two or more compute nodes that store data and perform queries and 
+computations.
+Amazon does not provide any SQL client tools but they recommend SQL
+workbench/J.
+http://www.sql-workbench.net/
+http://www.sql-workbench.net/workbench-Build123.zip
+Though you cannot connect to your cluster using psql or any SQL IDE
+that supports PostgreSQL or ODBC drivers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,98 @@
+DynamoDB-Notes:
+Amazon DynamoDB is a fully managed NoSQL database service that provides fast 
+and predictable performance with seamless scalability.
+DynamoDB makes it simple and cost-effective to store and retrieve any
+amount of data.
+Serves any level of request traffic.
+Hardware provisioning, setup and configuration, replication, software 
+patching, or cluster scaling is taken care by Amazon.
+
+SQL:
+	SQL databases are primarily called as Relational Databases (RDBMS).
+	Represents data in form of tables which consists of n numbers of rows
+	and columns.
+	Vertically scalable (increasing the hardware).
+	MySQL, Oracle, Sqlite, Postgres and My-SQL are examples of RDBMS.
+	SQL databases are good fit for the complex queries.
+
+
+
+NoSQL:
+	NoSQL databases are primarily called as non-relational or distributed database.
+	Collection of key-value pair, documents, graph database or wide-column, 
+	without standard schema.
+	Horizontally scalable increasing the database servers in the pool of resources.
+	MongoDB, BigTable, Redis, RavenDB, Cassandra, Hbase, Neo4j and CouchDB are
+	examples of NoSQL.
+	Nosql databases are not good fit for complex queries.
+
+
+
+DynamoDB enforces replication across three availability zones in one
+or more global geographic locations for high availability, durability and 
+read consistency, which creates backup copy of DynamoDB table.
+
+There are two typs of indexes in DynamoDB:
+
+1. Local Secondary Index (LSI)
+	In an LSI, a range key is mandatory.
+2. Global Secondary Index (GSI)
+	In GSI, you can have either a hash key or a hash+range key
+
+DynamoDB uses three basic data model units:
+
+1. Attributes:
+	Attributes are basic units of information, like key-value pairs.
+2. Items:
+	Items are collection of Attributes. They are like rows in an RDBMS 
+	table, except that DynamoDB requires a Primary Key.
+3. Tables:
+	Tables are collection of items. Tables do not have fixed schema
+	associated with them.
+
+Benefits of DynamoDB:
+	Fully Managed
+	Fast, consistent performance
+	Highly scalable
+	Flexible
+	Event-driven programming
+	Fine-grained access control
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

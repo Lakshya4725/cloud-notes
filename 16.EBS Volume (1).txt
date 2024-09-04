@@ -1,0 +1,24 @@
+Steps: Lab-EBS (Elastic Block Storage) Volume
+
+1. Create one EC2 Linux-VM in Oregon region. Select 2a as Availability zone.
+2. Create one EC2 Win-VM in oregon region. Select 2a as Availability zone.
+3. Now go to EBS Volume and create a new volume of 2GB in oregon region and 2a Availability zone.Name it say:2gb2a.
+4. Attach this volume to your windows ec2 instance.
+5. Connect to windows ec2 instance and go to disk management.(run > diskmgmt.msc). Right click the newly connected disk and make it online.
+6. create a simple volume on this disk and format it in FAT32.
+7. Go to explorer and access this volume. Create some files and folders inside it.
+8. Now we want to detach this volume from windows and attach it to linux.
+9. Go to windows machine and access disk management. Right click the hard disk and make it offline.
+10. Now go to AWS EBS storage, detach it from windows instance and attach it to linux instance.
+11. connect to linux instance using mobax or putty
+	$ sudo su
+	# fdisk -l
+	identify the new 2GB volume in FAT32
+	# mkdir /songs
+	# mount /dev/xvdf1 /songs
+	# mount or # df -h
+	# cd /songs
+	songs # ls
+12. Unmount the volume from linux machine.
+13. Once the lab is done,go to EBS volume service in AWS and detach volume from linux instance.
+14. Finally delete EBS Volume

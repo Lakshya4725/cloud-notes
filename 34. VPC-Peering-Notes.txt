@@ -1,0 +1,10 @@
+Notes:
+VPC peering is used to have communication across multiple VPC's
+within the same or different region.
+Peering can be done within your own account or other AWS account.
+Transitive peering is not supported.   A=B  B=C  A=/C
+Cross region peering is used to have communication across multiple VPCs
+acros two or more different regions.
+
+You cannot have more than one VPC peering connection between the same two VPCs at the same time.
+https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-basics.html

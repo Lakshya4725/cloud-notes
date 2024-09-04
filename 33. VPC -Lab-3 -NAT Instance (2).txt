@@ -1,0 +1,82 @@
+
+NAT-Instance-Lab
+NAT Gateway is used to access internet in private subnet.
+But NAT Gateway is heavily charged.
+To avoid billing, we can use NAT Instance instead of NAT Gateway,
+provided we have less number of servers in private subnet and their need
+to access Internet is also less.
+In this lab, scenario is that you have your VPC (PuneVPC).
+In that VPC, you have public and private subnet.
+You have Internet gateway (PuneIGW) attached to PuneVPC.
+You created route tables for public and private subnet.
+You have two ec2 instances in public subnet and two in private subnet.
+You have internet in public subnet through Internet Gateway.
+If we want Internet, in private subnet, we have to place Nat-instance 
+in Public subnet and add rule in route table of private subnet.
+Once done, you will be able to access internet from any ec2 instance in private
+subnet.
+
+Steps:
+
+1. Go to EC2. Select launch instance.
+2. Click Community AMI.
+3. In seach box type nat hvm.
+4. Select amzn-ami-vpc-nat-hvm-2018.03.0.20210915.x86_64-ebs - ami-0644b8e2bd3e3f580.
+5. Sometimes it goes to other paid t2 instances. 
+   Make sure you select free tier only.
+6. Click Next: Configure Instance Details.
+7. In number of instance type 1.
+8. In Network, select PuneVPC.
+9. In Subnet, select pune-pub-subnet.
+10. In Auto-assign Public IP, select Enable.
+11. Click Next: Add Storage
+12. Click Next: Add Tags
+13. In tag, type NAT-Instance-PuneVPC
+14. Click Next: Security Group
+15. Click Add Rule, All Traffic, Source: Anywhere, Review and Launch.
+16. In Boot from general purpose (SSD) click Next. Click Launch.
+17. Go to services, VPC, Route Tables, Pune-Pvt-route.
+18. Click Routes, Edit, Add another route.
+19. In target, we have to add Nat-instance. But it will not appear there.
+20. For that, select Nat-instance from ec2, click Action, Networking, 
+    change source/destination check. Click Yes,Disable.
+21. Now this NAT instance will be visible in Target field of Add rule 
+    in Route Table.
+22. Go to Route Tables,In Target, add Nat-instance and in destination 
+    type 0.0.0.0/0
+23. Go to any instance in private subnet and try to ping with
+    any internet site say www.yahoo.com. You should ping with yahoo because
+    of NAT instance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

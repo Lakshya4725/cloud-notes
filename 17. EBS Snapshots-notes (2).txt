@@ -1,0 +1,35 @@
+EBS  Volumes and Snapshots:
+
+ EBS Volumes:
+
+EBS volumes are specific to their AZ.
+
+An instance can have multiple EBS volumes attached.
+
+These EBS volumes can be attached as well as detached from an instance 
+without any data loss.
+
+EBS volumes at one particular time can be attached to only one instance,
+it cannot be used with two or more instances at the the same time.
+
+EBS volume can be attached to an instance which is in same AZ, it cannot be attached
+to an istance which is in another AZ.
+
+EBS volume will have a Volume ID, which will be used by cloudwatch and 
+other services.
+
+
+EBS Snapshots:
+
+Snapshots are used to take EBS point-in-time backup.
+
+Snapshots are incremental backup of the EBS Volume.
+
+Snapshots are region specific, where as volumes are specific to AZ.
+
+EBS volumes cannot be increased directly through volumes.
+
+To increase the size of EBS volumes first create the snapshot, then 
+from this snapshot create the required size of volume.
+
+
