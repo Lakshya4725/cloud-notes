@@ -1,0 +1,258 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to create two VPCs, each with a private subnet, NAT Gateway, route table, and VPC peering connection. Additionally, a public subnet is created in VPC1.
+
+Resources:
+  # VPC 1
+  MyVPC1:
+    Type: AWS::EC2::VPC
+    Properties: 
+      CidrBlock: 10.10.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: MyVPC1
+
+  # Private Subnet for VPC 1
+  MyPrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC1
+      CidrBlock: 10.10.99.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: MyPrivateSubnet1
+
+  # Public Subnet for VPC 1
+  MyPublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC1
+      CidrBlock: 10.10.100.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: MyPublicSubnet1
+
+  # Internet Gateway for VPC 1
+  MyInternetGateway1:
+    Type: AWS::EC2::InternetGateway
+    Properties: 
+      Tags:
+        - Key: Name
+          Value: MyInternetGateway1
+
+  # Attach Internet Gateway to VPC 1
+  AttachGateway1:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties: 
+      VpcId: !Ref MyVPC1
+      InternetGatewayId: !Ref MyInternetGateway1
+
+  # Elastic IP for NAT Gateway in VPC 1
+  MyElasticIP1:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  # NAT Gateway for VPC 1
+  MyNatGateway1:
+    Type: AWS::EC2::NatGateway
+    Properties: 
+      AllocationId: !GetAtt MyElasticIP1.AllocationId
+      SubnetId: !Ref MyPublicSubnet1
+      Tags:
+        - Key: Name
+          Value: MyNatGateway1
+
+  # Route Table for Private Subnet in VPC 1
+  MyPrivateRouteTable1:
+    Type: AWS::EC2::RouteTable
+    Properties: 
+      VpcId: !Ref MyVPC1
+      Tags:
+        - Key: Name
+          Value: MyPrivateRouteTable1
+
+  # Route Table for Public Subnet in VPC 1
+  MyPublicRouteTable1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC1
+      Tags:
+        - Key: Name
+          Value: MyPublicRouteTable1
+
+  # Route for Private Subnet in VPC 1 to NAT Gateway
+  PrivateSubnetRoute1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref MyPrivateRouteTable1
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref MyNatGateway1
+
+  # Route for Public Subnet in VPC 1 to Internet Gateway
+  PublicSubnetRoute1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref MyPublicRouteTable1
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref MyInternetGateway1
+
+  # Route Table Association for Private Subnet in VPC 1
+  PrivateSubnetRouteTableAssociation1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties: 
+      SubnetId: !Ref MyPrivateSubnet1
+      RouteTableId: !Ref MyPrivateRouteTable1
+
+  # Route Table Association for Public Subnet in VPC 1
+  PublicSubnetRouteTableAssociation1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref MyPublicSubnet1
+      RouteTableId: !Ref MyPublicRouteTable1
+
+  # VPC 2
+  MyVPC2:
+    Type: AWS::EC2::VPC
+    Properties: 
+      CidrBlock: 192.168.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: MyVPC2
+
+  # Private Subnet for VPC 2
+  MyPrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC2
+      CidrBlock: 192.168.99.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: MyPrivateSubnet2
+
+  # Internet Gateway for VPC 2
+  MyInternetGateway2:
+    Type: AWS::EC2::InternetGateway
+    Properties: 
+      Tags:
+        - Key: Name
+          Value: MyInternetGateway2
+
+  # Attach Internet Gateway to VPC 2
+  AttachGateway2:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties: 
+      VpcId: !Ref MyVPC2
+      InternetGatewayId: !Ref MyInternetGateway2
+
+  # Elastic IP for NAT Gateway in VPC 2
+  MyElasticIP2:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  # NAT Gateway for VPC 2
+  MyNatGateway2:
+    Type: AWS::EC2::NatGateway
+    Properties: 
+      AllocationId: !GetAtt MyElasticIP2.AllocationId
+      SubnetId: !Ref MyPrivateSubnet2
+      Tags:
+        - Key: Name
+          Value: MyNatGateway2
+
+  # Route Table for Private Subnet in VPC 2
+  MyPrivateRouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties: 
+      VpcId: !Ref MyVPC2
+      Tags:
+        - Key: Name
+          Value: MyPrivateRouteTable2
+
+  # Route for Private Subnet in VPC 2 to NAT Gateway
+  PrivateSubnetRoute2:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref MyPrivateRouteTable2
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref MyNatGateway2
+
+  # Route Table Association for Private Subnet in VPC 2
+  PrivateSubnetRouteTableAssociation2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties: 
+      SubnetId: !Ref MyPrivateSubnet2
+      RouteTableId: !Ref MyPrivateRouteTable2
+
+  # VPC Peering Connection
+  VPCPeeringConnection:
+    Type: AWS::EC2::VPCPeeringConnection
+    Properties:
+      PeerVpcId: !Ref MyVPC2
+      VpcId: !Ref MyVPC1
+      PeerRegion: !Ref "AWS::Region"
+
+  # Route for VPC Peering in VPC 1
+  VPC1ToVPC2Route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref MyPrivateRouteTable1
+      DestinationCidrBlock: 192.168.0.0/16
+      VpcPeeringConnectionId: !Ref VPCPeeringConnection
+
+  # Route for VPC Peering in VPC 2
+  VPC2ToVPC1Route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref MyPrivateRouteTable2
+      DestinationCidrBlock: 10.10.0.0/16
+      VpcPeeringConnectionId: !Ref VPCPeeringConnection
+
+Outputs:
+  VPC1Id:
+    Description: VPC 1 ID
+    Value: !Ref MyVPC1
+  PrivateSubnet1Id:
+    Description: Private Subnet 1 ID
+    Value: !Ref MyPrivateSubnet1
+  PublicSubnet1Id:
+    Description: Public Subnet 1 ID
+    Value: !Ref MyPublicSubnet1
+  NatGateway1Id:
+    Description: NAT Gateway 1 ID
+    Value: !Ref MyNatGateway1
+  PrivateRouteTable1Id:
+    Description: Private Route Table 1 ID
+    Value: !Ref MyPrivateRouteTable1
+  PublicRouteTable1Id:
+    Description: Public Route Table 1 ID
+    Value: !Ref MyPublicRouteTable1
+
+  VPC2Id:
+    Description: VPC 2 ID
+    Value: !Ref MyVPC2
+  PrivateSubnet2Id:
+    Description: Private Subnet 2 ID
+    Value: !Ref MyPrivateSubnet2
+  NatGateway2Id:
+    Description: NAT Gateway 2 ID
+    Value: !Ref MyNatGateway2
+  PrivateRouteTable2Id:
+    Description: Private Route Table 2 ID
+    Value: !Ref MyPrivateRouteTable2
+
+  VPCPeeringConnectionId:
+    Description: VPC Peering Connection ID
+    Value: !Ref VPCPeeringConnection
+
+   
